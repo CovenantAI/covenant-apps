@@ -1,40 +1,92 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# CovenantAI Frontend
+
+React-based dashboard for the CovenantAI yield‑aggregator on Starknet. The frontend is built to provide a sleek user interface.
+
+---
+
+## Features
+
+* **ERC‑4626 Vault Interaction**: Deposit and withdraw tokens from the CovenantAI vault.
+* **Real-Time Data**: Display current block, TVL, APY, and vault share price via starknet.js.
+* **Animations**: Smooth, micro-interactions powered by Framer Motion.
+* **Responsive Design**: Mobile‑first, fully responsive layouts.
+* **Modular Components**: Reusable components and hooks.
+* **Theming**: Dark and light mode support via Tailwind CSS.
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+* Node.js v16+
+* npm or yarn
+
+### Installation
 
 ```bash
+# Clone the repo
+git clone https://github.com/CovenantAI/covenant-frontend.git
+cd covenant-frontend
+
+# Install dependencies
+npm install
+# or
+yarn install
+```
+
+### Development
+
+```bash
+# Start server
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open your browser at `http://localhost:5173` to view the app. Any changes you make will hot-reload instantly.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+### Building for Production
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+```bash
+npm run build
+# or
+yarn build
+```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+The production-ready assets will be in `dist/`. Serve them with any static file server.
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Usage Examples
 
-## Learn More
+### Fetching Vault Data
 
-To learn more about Next.js, take a look at the following resources:
+```ts
+import { provider } from './lib/starknet';
+import { Contract } from 'starknet';
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+const VAULT_ADDRESS = '0x...';
+const VAULT_ABI = [ /* ERC‑4626 ABI */ ];
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+async function getVaultInfo() {
+  const vault = new Contract(VAULT_ABI, VAULT_ADDRESS, provider);
+  const totalAssets = await vault.totalAssets();
+  const totalSupply = await vault.totalSupply();
+  return { totalAssets, sharePrice: totalAssets / totalSupply };
+}
+```
 
-## Deploy on Vercel
+## Scripts
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+* `npm run dev` / `yarn dev` – Start development server
+* `npm run build` / `yarn build` – Build for production
+* `npm run preview` / `yarn preview` – Preview built app
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+## Contributing
+
+Contributions are welcome! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
+
+## License
+
+This project is released under the [MIT License](./LICENSE).
+
+---
+
+Built with ❤️ by the CovenantAI early team.
